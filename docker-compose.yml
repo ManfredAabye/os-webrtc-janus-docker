@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+    janus:
+        image: $JS_IMAGE
+
+        network_mode: host
+            
+        volumes: 
+            - ./etc/janus:/opt/janus/etc/janus
+
+        restart: unless-stopped

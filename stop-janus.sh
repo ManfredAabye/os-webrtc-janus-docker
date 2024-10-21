@@ -17,5 +17,4 @@ docker-compose \
     --file docker-compose.yml \
     --env-file ./env \
     --project-name janus-gateway \
-    up \
-    --detach
+    down \
