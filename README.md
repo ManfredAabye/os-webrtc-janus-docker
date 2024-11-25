@@ -7,6 +7,22 @@ This project is for building and running a [Docker] image to run as a service
 with a region simulator and a grid server to supply voice for the space and
 groups.
 
+Since [OpenSimulator] has both regional spacial voice and grid-wide
+group voice channels, this voice server can be run with the region sinulator
+as well as with the central grid server. There are thus two possible
+setups:
+
+- the central grid service runs a [Janus] server that supports all
+    the voice use on the grid;
+- a region runs a [Janus] server to provide the local, spacial voice
+    for that region.
+
+NOTE: as of Dec 2024, this does not provide spacial voice for [OpenSimulator].
+This is a feature that must be added through changes to this
+[Janus] service (modify AudioBridge to read the data channel and
+change the stereo settings for the channels) and that is a future
+project.
+
 # BUILDING
 
 One process is to check the repository out onto the Docker running machine,
