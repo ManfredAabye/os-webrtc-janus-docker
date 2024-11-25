@@ -43,7 +43,7 @@ RUN cd ~ \
 VOLUME /opt/janus/etc/janus/
 
 # API connections
-EXPOSE 7088 8088 8188 8089 7188
+EXPOSE 14220-14229
 
 # the webrtc streams created
 EXPOSE 10000-10200/udp
