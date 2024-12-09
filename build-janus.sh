@@ -13,7 +13,7 @@ ARCH=x86_64
 
 # The container parameters
 IMAGE_OWNER=misterblue
-IMAGE_NAME=janus-gateway
+IMAGE_NAME=os-webrtc-janus-docker
 IMAGE_VERSION=latest
 DOCKER_IMAGE="${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_VERSION}"
 

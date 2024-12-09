@@ -16,7 +16,7 @@ ARG JANUS_BUILD_TARGET=Release
 
 # The container parameters
 ARG IMAGE_OWNER=misterblue
-ARG IMAGE_NAME=janus-gateway
+ARG IMAGE_NAME=os-webrtc-janus-docker
 ARG IMAGE_VERSION=latest
 ARG DOCKER_IMAGE="${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_VERSION}"
 
