@@ -17,5 +17,4 @@ docker-compose \
     --file docker-compose.yml \
     --env-file ./env \
     --project-name os-webrtc-janus-docker \
-    up \
-    --detach
+    restart

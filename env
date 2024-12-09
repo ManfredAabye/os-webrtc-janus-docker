@@ -4,7 +4,7 @@
 # NOTE: any secrets (access tokens, ...) go into the file "secrets".
 
 # The Docker image to run
-JS_IMAGE=janus-gateway:latest
+JS_IMAGE=os-webrtc-janus-docker:latest
 
 # Server name that is returned in Janus info requests
 JS_SERVER_NAME=GridVoice

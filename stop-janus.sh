@@ -16,5 +16,5 @@ BASE=$(pwd)
 docker-compose \
     --file docker-compose.yml \
     --env-file ./env \
-    --project-name janus-gateway \
-    down \
+    --project-name os-webrtc-janus-docker \
+    down
