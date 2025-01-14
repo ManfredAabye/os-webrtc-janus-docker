@@ -13,7 +13,7 @@ BASE=$(pwd)
 # These local configuration files are mounted into the running container.
 ./updateConfiguration.sh
 
-docker-compose \
+docker compose \
     --file docker-compose.yml \
     --env-file ./env \
     --project-name os-webrtc-janus-docker \
