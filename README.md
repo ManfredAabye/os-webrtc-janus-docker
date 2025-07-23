@@ -1,107 +1,70 @@
 # os-webrtc-janus-docker
 
-This project is for building and running a [Janus-Gateway] service for
-supporting WebRTC based voice in [OpenSimulator]. This is used
-in conjunction with [os-webrtc-janus] which is an addon-module for
-[OpenSimulator].
+Dieses Projekt dient dem Erstellen und Ausführen eines [Janus-Gateway]-Dienstes zur Unterstützung von WebRTC-basiertem Voice in [OpenSimulator]. Es wird in Verbindung mit [os-webrtc-janus] verwendet, einem Addon-Modul für [OpenSimulator].
 
-This project builds a [Docker] image of [Janus-Gateway] with configuration
-scripts for easy setup when used with [os-webrtc-janus].
+Dieses Projekt erstellt ein [Docker]-Image von [Janus-Gateway] mit Konfigurationsskripten für eine einfache Einrichtung bei der Nutzung mit [os-webrtc-janus].
 
-The [Janus-Gateway] image can be run either with the central grid service
-(Robust server) or alongside a region simulator for local spatial voice.
-See the documentation of [os-webrtc-janus] for details on [OpenSimulator]
-configuration.
+Das [Janus-Gateway]-Image kann entweder mit dem zentralen Grid-Service (Robust-Server) oder zusammen mit einem Regionensimulator für lokalen, räumlichen Voice-Betrieb verwendet werden. Siehe die Dokumentation von [os-webrtc-janus] für Details zur Konfiguration von [OpenSimulator].
 
-Since [OpenSimulator] has both regional spacial voice and grid-wide
-group voice channels, this voice server can be run with the region simulator
-as well as with the central grid server. There are thus two possible
-setups:
+Da [OpenSimulator] sowohl regionale, räumliche Voice-Kommunikation als auch gridweite Gruppen-Sprachkanäle hat, kann dieser Voice-Server sowohl mit dem Regionensimulator als auch mit dem zentralen Grid-Server betrieben werden. Es gibt somit zwei mögliche Setups:
 
-- the central grid service runs a [Janus] server that supports all
-    the voice use on the grid;
-- a region runs a [Janus] server to provide the local, spatial voice
-    for that region.
+- Der zentrale Grid-Service betreibt einen [Janus]-Server, der alle Voice-Nutzung im Grid unterstützt
+- Eine Region betreibt einen [Janus]-Server, der den lokalen, räumlichen Voice-Service für diese Region bereitstellt.
 
-NOTE: as of Dec 2024, this does not provide spatial voice for [OpenSimulator].
-This is a feature that must be added through changes to the
-[Janus] service (modify AudioBridge to read the data channel and
-change the stereo settings for the channels) and that is a future
-project.
+HINWEIS: Stand Dezember 2024 bietet dies noch keinen räumlichen Voice-Support für [OpenSimulator]. Dieses Feature muss noch durch Änderungen am [Janus]-Dienst hinzugefügt werden (Änderung der AudioBridge, damit sie den Datenkanal liest und die Stereoeinstellungen der Kanäle anpasst). Das ist ein zukünftiges Projekt.
 
-Instructions for:
+Anleitungen für:
 
-- [Building Docker Image](#Building)
-- [Configuration](#Configuration)
-- [Running Docker Image on Linux](#Docker_Linux)
-- [Running Docker Image on Windows using WSL](#Docker_WSL)
+- [Docker-Image bauen](#Building)
+- [Konfiguration](#Configuration)
+- [Docker-Image unter Linux ausführen](#Docker_Linux)
+- [Docker-Image unter Windows mit WSL ausführen](#Docker_WSL)
 
 <a id="Building"></a>
-## BUILDING
+## ERSTELLEN
 
-One process is to check the repository out onto the Docker running machine,
-edit the `env` and `secrets` files, build the [Janus] image, and then run
-it. This creates the Janus Docker image on that machine and then runs
-it with your configuration.
+Ein möglicher Ablauf ist, das Repository auf den Docker-Server zu klonen, die Dateien `env` und `secrets` zu bearbeiten, das [Janus]-Image zu bauen und dann auszuführen. So wird das Janus Docker-Image auf dem Rechner erstellt und mit Ihrer Konfiguration gestartet.
 
-Once you have Docker on your Linux system, the steps on Linux are:
+Wenn Docker auf Ihrem Linux-System installiert ist, lauten die Schritte:
 
 ```
 git clone https://github.com/Misterblue/os-webrtc-janus-docker
 cd os-webrtc-janus-docker
-# Edit "secrets" with API keys
+# "secrets" mit API-Keys bearbeiten
 ./build-janus.sh
 ./run-janus.sh
 ```
 
-`build-janus.sh` builds the local Docker image and
-`run-janus.sh` configures the configuration file and runs
-the Docker image.
+`build-janus.sh` baut das lokale Docker-Image und  
+`run-janus.sh` konfiguriert die Konfigurationsdatei und startet das Docker-Image.
 
-For building on Windows, there have been some attempts to build
-on Windows but [Janus] have many, many package dependencies
-and those attempts have not been smooth.
-The best bet is to use Windows System for Linux (WSL)
-which is a standard Microsoft addition to Windows.
-See below for some instructions on WSL.
+Für das Bauen unter Windows gab es einige Versuche, aber [Janus] hat sehr viele Paketabhängigkeiten und diese Versuche waren nicht erfolgreich. Am besten nutzt man das Windows Subsystem for Linux (WSL), das eine Standarderweiterung für Windows ist. Unten gibt es Anweisungen für WSL.
 
-The scripts build only for architecture "X86_64".
-If you have success building for other architectures, please
-submit an issue or pull request so your solution can be
-integrated.
+Die Skripte bauen nur für die Architektur "X86_64".  
+Wenn Sie erfolgreich für andere Architekturen bauen, erstellen Sie bitte ein Issue oder einen Pull Request, damit Ihre Lösung integriert werden kann.
 
 <a id="Configuration"></a>
-## CONFIGURATION
+## KONFIGURATION
 
-There are two files, `env` and `secrets` that contain all the usual
-configuration settings. The `etc/janus` directory has all the unmodified [Janus]
-configuration files from the distribution. When `run-janus.sh` is 
-run, it updates values in the configuration files based on the
-values in `env` and `secrets`. You can update the [Janus] configuration
-files manually.
+Es gibt zwei Dateien, `env` und `secrets`, die alle üblichen Konfigurationseinstellungen enthalten. Das Verzeichnis `etc/janus` enthält alle unveränderten [Janus]-Konfigurationsdateien aus der Distribution. Wenn `run-janus.sh` ausgeführt wird, werden die Werte in den Konfigurationsdateien je nach Inhalt von `env` und `secrets` aktualisiert. Sie können die [Janus]-Konfigurationsdateien auch manuell anpassen.
 
-#### OPENSIMULATOR CONFIGURATION
+#### OPENSIMULATOR-KONFIGURATION
 
-[OpenSimulator] uses the [Janus] API so the Janus configuration just
-needs the API passwords set. Set the same passwords in both
-the Janus `secrets` file and in the INI configuration files on the
-region/grid server.
+[OpenSimulator] verwendet die [Janus]-API, daher müssen in der Janus-Konfiguration lediglich die API-Passwörter gesetzt werden. Verwenden Sie die gleichen Passwörter in der Janus-`secrets`-Datei und in den INI-Konfigurationsdateien auf dem Regions-/Grid-Server.
 
-For instance, on the Janus server, the `secrets` file could be:
+Beispiel für die `secrets`-Datei auf dem Janus-Server:
 
 ```
-# Secret parameters for running Janus
-# This are usually the access tokens and are merging into the configuration
-#     files by the updateConfiguration.sh script.
-
-# THESE ARE SECRETS!!!!
-# NEVER, NEVER, NEVER CHECK THEM IN!!!
+# Geheime Parameter für den Betrieb von Janus
+# Dies sind üblicherweise Zugriffstoken und werden durch das Skript updateConfiguration.sh in die Konfigurationsdateien eingefügt.
+# DAS SIND GEHEIMNISSE!!!!
+# NIEMALS, NIEMALS, NIEMALS EINCHECKEN!!!
 
 JS_ADMIN_TOKEN=cde086df-bab3-446d-9af1-50714eacb405
 JS_API_TOKEN=63f54171-7f8a-44bb-8f6b-532a0f1c3204
 ```
 
-And, on [OpenSimulator] server , `bin/config/os-webrtc-janus.ini` could be:
+Und auf dem [OpenSimulator]-Server, `bin/config/os-webrtc-janus.ini` z.B.:
 
 ```
 [WebRtcVoice]
@@ -114,100 +77,92 @@ And, on [OpenSimulator] server , `bin/config/os-webrtc-janus.ini` could be:
     APIToken=cde086df-bab3-446d-9af1-50714eacb405
     JanusGatewayAdminURI=http://janus.example.org:14225/voiceAdmin
     AdminAPIToken=63f54171-7f8a-44bb-8f6b-532a0f1c3204
-
 ```
 
-The API tokens are just strings so it can be almost anything. In this
-example, I generated unique GUIDs (Linux command `uuidgen`).
+Die API-Tokens sind einfache Zeichenfolgen und können fast beliebig gewählt werden. Im Beispiel habe ich eindeutige GUIDs generiert (Linux-Befehl `uuidgen`).
 
-See [os-webrtc-janus] for details on the [OpenSimulator] setup.
+Siehe [os-webrtc-janus] für Details zur [OpenSimulator]-Einrichtung.
 
 <a id="Docker_Linux"></a>
-## Running Docker Image on Linux
+## Docker-Image unter Linux ausführen
 
-Install the Docker engine on your Linux system. You can use the packaging
-system for your Linux or follow the instuctions at
-[https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/).
+Installieren Sie die Docker-Engine auf Ihrem Linux-System. Sie können das Paketmanagementsystem Ihrer Distribution verwenden oder den Anweisungen unter  
+[https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/) folgen.
 
-With Docker installed, checkout this repository and build the image.
+Mit installiertem Docker klonen Sie dieses Repository und bauen das Image:
 
 ```
-# Clone repository
+# Repository klonen
 git clone https://github.com/Misterblue/os-webrtc-janus-docker.git
 cd os-webrtc-janus-docker
 
-# Build the Janus-Gateway image
+# Janus-Gateway-Image bauen
 ./build-janus.sh
-# you can see  the built image with "docker images"
+# Das gebaute Image kann mit "docker images" angezeigt werden
 
-# Edit configuration files
-#   "env" probably doesn't need any changes
-#   "secrets" needs new API tokens (generate random UUIDs with 'uuidgen')
+# Konfigurationsdateien bearbeiten
+#   "env" muss wahrscheinlich nicht geändert werden
+#   "secrets" benötigt neue API-Tokens (zufällige UUIDs mit 'uuidgen' generieren)
 
-# Start the Janus image in a new container
+# Janus-Image in einem neuen Container starten
 ./run-janus.sh
-
 ```
 
 <a id="Docker_WSL"></a>
-## Running Docker Image on Windows using WSL
+## Docker-Image unter Windows mit WSL ausführen
 
-The Janus Docker image can be run using the Windows Subsystem for Linux (WSL).
-This involves installing WSL2 on your Windows System and then either
-installing Docker in a WSL2 instance or installing [Docker Desktop].
+Das Janus Docker-Image kann mit dem Windows Subsystem for Linux (WSL) ausgeführt werden. Dies beinhaltet die Installation von WSL2 auf Ihrem Windows-System und anschließend entweder die Installation von Docker in einer WSL2-Instanz oder die Nutzung von [Docker Desktop].
 
 #### WSL
 
-Microsoft provides instructions for installing and setting up WSL at
-[https://learn.microsoft.com/en-us/windows/wsl/setup/environment](https://learn.microsoft.com/en-us/windows/wsl/setup/environment)
-I've been using the Ubuntu distributions but you many have other preferences.
+Microsoft bietet Anweisungen zur Installation und Einrichtung von WSL unter  
+[https://learn.microsoft.com/en-us/windows/wsl/setup/environment](https://learn.microsoft.com/en-us/windows/wsl/setup/environment)  
+Ich verwende die Ubuntu-Distributionen, aber Sie können auch andere wählen.
 
-In a 'cmd' window:
+Im 'cmd'-Fenster:
 
 ```
-# Install WSL on your Windows system
+# WSL auf Ihrem Windows-System installieren
 c:\Users\Me> wsl --install -d Ubuntu-24.04
 
-# Start a Linux image and switch the console to that image (you're now talking to Linux)
+# Eine Linux-Instanz starten und die Konsole zu dieser Instanz wechseln (Sie befinden sich nun in Linux)
 c:\Users\Me> ubuntu
 
-# setup initial account info. Follow the prompts.
+# Initiale Kontoinfos einrichten. Den Anweisungen folgen.
 
-# Install any updates to the Ubuntu distribution
+# Updates für die Ubuntu-Distribution installieren
 $ sudo apt-get update && apt-get upgrade -y
 
-# Install Docker on the Ubuntu WSL image
-# Instructions at https://docs.docker.com/engine/install/ubuntu/
-# Simple install script version:
+# Docker auf dem Ubuntu WSL-Image installieren
+# Anleitungen unter https://docs.docker.com/engine/install/ubuntu/
+# Einfache Installationsvariante:
 $ curl -fsSL https://get.docker.com -o get-docker.sh
 $ sudo sh get-docker.sh
 
-# Clone repository
+# Repository klonen
 $ git clone https://github.com/Misterblue/os-webrtc-janus-docker.git
 $ cd os-webrtc-janus-docker
 
-# Build the Janus-Gateway image
+# Janus-Gateway-Image bauen
 $ ./build-janus.sh
-# you can see  the built image with "docker images"
+# Das gebaute Image kann mit "docker images" angezeigt werden
 
-# Edit configuration files
-#   "env" probably doesn't need any changes
-#   "secrets" needs new API tokens (generate random UUIDs with 'uuidgen')
+# Konfigurationsdateien bearbeiten
+#   "env" muss wahrscheinlich nicht geändert werden
+#   "secrets" benötigt neue API-Tokens (zufällige UUIDs mit 'uuidgen' generieren)
 
-# Start the Janus image in a new container
+# Janus-Image in einem neuen Container starten
 $ ./run-janus.sh
 
-# Exit this command session. The Janus Docker container will continue running.
+# Diese Sitzung beenden. Der Janus Docker-Container läuft weiter.
 $ exit
    
 C:\Users\Me>
 ```
 
-You can see the docker image running with the 'cmd' command `docker ps`.
+Mit dem 'cmd'-Befehl `docker ps` können Sie das laufende Docker-Image anzeigen.
 
-At any time, you can switch into the Linux image and manage the running
-Docker container. The scripts `stop-janus.sh` or `restart-janus.sh`
-can be run thusly:
+Sie können jederzeit in das Linux-Image wechseln und den laufenden Docker-Container verwalten. Die Skripte `stop-janus.sh` oder `restart-janus.sh` können so ausgeführt werden:
 
 ```
 c:\Users\Me> ubuntu
@@ -217,31 +172,29 @@ $ exit
 c:\Users\Me>
 ```
 
-Lot's of good Docker and Windows information on [Austin Tate's Blog] in
+Viele hilfreiche Informationen zu Docker und Windows gibt es in [Austin Tate's Blog] unter  
 [Windows Subsystem for Linux – LSL – Resources].
 
 #### Docker Desktop
 
-[Docker Desktop] is a user interface and Docker runtime system that uses
-WSL to run Docker containers 
-It is nice in that it provides a GUI to the underlying Docker system so you
-can easily see and manage the images running.
-Installing [Docker Desktop] also installs Docker in such a way that the
-Docker command line commands are available in 'cmd' windows.
+[Docker Desktop] ist eine Benutzeroberfläche und ein Docker-Laufzeitsystem, das WSL für das Ausführen von Docker-Containern verwendet.  
+Es ist praktisch, da es eine grafische Oberfläche für das zugrunde liegende Docker-System bietet und Sie einfach die laufenden Images sehen und verwalten können.  
+Durch die Installation von [Docker Desktop] werden die Docker-Befehle auch in 'cmd'-Fenstern verfügbar.
 
-Follow the instructions at
-[https://docs.docker.com/desktop/setup/install/windows-install/](https://docs.docker.com/desktop/setup/install/windows-install/)
-to download and install Docker Desktop.
+Folgen Sie den Anweisungen unter  
+[https://docs.docker.com/desktop/setup/install/windows-install/](https://docs.docker.com/desktop/setup/install/windows-install/)  
+um Docker Desktop zu installieren.
 
-Once installed, you can build and run the Janus Docker image as explained above
-and then view and control the running container with the Docker Desktop UI.
+Nach der Installation können Sie das Janus Docker-Image wie oben beschrieben bauen und ausführen und anschließend den laufenden Container mit der Docker Desktop UI verwalten.
 
-[Docker]: https://www.docker.com/
-[Docker Desktop]: https://docs.docker.com/desktop/
-[OpenSimulator]: http://opensimulator.org
-[WebRTC]: https://webrtc.org/
-[Janus]: https://janus.conf.meetecho.com/
-[Janus-Gateway]: https://janus.conf.meetecho.com/
-[os-webrtc-janus]: https://github.com/Misterblue/os-webrtc-janus
-[Windows Subsystem for Linux – LSL – Resources]: https://blog.inf.ed.ac.uk/atate/2024/12/31/wsl-resources/
-[Austin Tate's Blog]: https://blog.inf.ed.ac.uk/atate/
+[Docker]: https://www.docker.com/  
+[Docker Desktop]: https://docs.docker.com/desktop/  
+[OpenSimulator]: http://opensimulator.org  
+[WebRTC]: https://webrtc.org/  
+[Janus]: https://janus.conf.meetecho.com/  
+[Janus-Gateway]: https://janus.conf.meetecho.com/  
+[os-webrtc-janus]: https://github.com/Misterblue/os-webrtc-janus  
+[Windows Subsystem for Linux – LSL – Resources]: https://blog.inf.ed.ac.uk/atate/2024/12/31/wsl-resources/  
+[Austin Tate's Blog]: https://blog.inf.ed.ac.uk/atate/  
+
+---
