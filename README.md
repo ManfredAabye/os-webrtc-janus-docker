@@ -1,4 +1,6 @@
-# os-webrtc-janus-docker
+# os-webrtc-janus
+
+Aufgabe Docker entfernen und eine ordentliche Installation erstellen.
 
 Dieses Projekt dient dem Erstellen und Ausführen eines [Janus-Gateway]-Dienstes zur Unterstützung von WebRTC-basiertem Voice in [OpenSimulator]. Es wird in Verbindung mit [os-webrtc-janus] verwendet, einem Addon-Modul für [OpenSimulator].
 
